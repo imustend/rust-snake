@@ -1,15 +1,11 @@
 use std::fmt::{Display, Write};
-
 use crate::{random::random_range, HashSet};
 
 type Position = (isize, isize);
 
-
 fn add_positions((x1, y1): Position, (x2, y2): Position) -> Position {
 	(x1 + x2, y1 + y2)
 }
-
-
 
 #[derive(Debug)]
 pub enum Direction {

@@ -1,10 +1,16 @@
 use console::Term;
-use std::collections::HashSet;
-use std::sync::mpsc;
-use std::sync::mpsc::Receiver;
-use std::sync::mpsc::TryRecvError;
-use std::thread;
-use std::time::Duration;
+use std::{
+	collections::HashSet,
+	sync::{
+		mpsc::{
+			self,
+			Receiver,
+			TryRecvError
+		}
+	},
+	thread,
+	time::Duration,
+};
 
 mod random;
 mod snake;
@@ -30,6 +36,7 @@ fn main() {
     let term = Term::stdout();
     let _res = term.hide_cursor();
 
+	// yes i used zero width space, it works
     let mut s_key = '​';
 
     let stdin_channel = spawn_stdin_channel();
@@ -41,8 +48,7 @@ fn main() {
         println!("Points: {}", snake.get_len());
 
         // check for key press
-        // the character read is blocking so i have to move it to different thread
-
+        // some multi threading shenanigans 
         match stdin_channel.try_recv() {
             Ok(key) => {
                 s_key = key;
@@ -58,6 +64,7 @@ fn main() {
             'd' => snake.snake_direction = Direction::Right,
             _ => {}
         }
+		// here again, the zero width space
         if s_key == '​' {
 			println!("Press any key");
 			thread::sleep(Duration::from_millis(500));
